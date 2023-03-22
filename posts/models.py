@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
-from django.utils.crypto import get_random_string
+import uuid
 
 
 # Create your models here.
@@ -24,7 +24,7 @@ class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
     post_title = models.CharField(max_length=50)
     post_content = models.TextField()
-    post_slug = models.SlugField(unique=True,null=True)
+    post_slug = models.SlugField(unique=True,default=uuid.uuid1)
     post_tags = TaggableManager()
     post_likes = models.ManyToManyField(User,related_name='post_likes')
     post_created_at = models.DateTimeField(auto_now_add=True)
@@ -33,12 +33,7 @@ class Post(models.Model):
     post_view_count = models.IntegerField(default=0)
     def __str__(self):
         return self.post_content
-    # When saving the post automatically add the create a slug based on post title so that user dont have to enter slug manualy
-    def save(self, *args, **kwargs):
-        value = self.post_title 
-        self.post_slug = slugify(value, allow_unicode=True) 
-        super().save(*args, **kwargs)
-
+ 
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

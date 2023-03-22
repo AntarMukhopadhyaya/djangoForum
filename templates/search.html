@@ -1,4 +1,7 @@
-{% extends 'layout.html' %} {% block styles %}
+{% extends 'layout.html' %}  {% comment "" %} Extending the layout{% endcomment %}
+{% comment %} Css Styles {% endcomment %}
+{% block styles %}
+
 <style>
   body {
     background: #eee;
@@ -26,13 +29,18 @@
 
 {% endblock styles %} {% block body %}
 <div class="container">
-  <h5>Search Result for: {{search_query}}</h5>
-  {% for post in posts %} {% include "includes/post.html" %} {% empty %}
+  <h5>Search Result for: {{search_query}}  {% comment "" %} Getting the search query that was passed to this page{% endcomment %}</h5>
+  {% comment %} Iterating the post obtained using jinja template for loop {% endcomment %}
+  {% for post in posts %} 
+  {% comment %} Including the post.html from includes folder {% endcomment %}
+  {% include "includes/post.html" %} 
+  {% comment %} If No such post exist for the search query {% endcomment %}
+  {% empty %}
+  {% comment %} Showing message that there is no such post {% endcomment %}
   <center>
     <strong
       ><h5>No Such Post Found</h5>
-      <a href="{% url 'home' %}">Return Home</a></strong
-    >
+      <a href="{% url 'home' %}">Return Home</a></strong> {% comment  %}Redirecting the User Back to home{% endcomment %}
   </center>
 
   {% endfor %}
