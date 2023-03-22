@@ -1,9 +1,8 @@
 
-from django.shortcuts import redirect, render, get_object_or_404
-from posts.models import Category, Post
-from django.contrib.auth.models import User
-from django.db.models import Count
-from taggit.models import Tag
+from django.shortcuts import render, get_object_or_404 # get_object_or_404() gets data from models if data does not exists it returns 404 and render() is used to render html page
+from posts.models import Category, Post # importing the Category and Post Model
+from django.contrib.auth.models import User  #importing the User Model
+from taggit.models import Tag #importing Tag models which stores all the tags data
 
 
 def home(request):
@@ -30,6 +29,7 @@ def home(request):
         "newest_user":newest_user,
         'colors': ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
     }
+    # Rendering the home page
     return render(request, 'home.html', context)
 
 
@@ -52,7 +52,9 @@ def search(request):
 
 
 def tagged(request, slug):
+    # getting the tag by tag slug if does not exist then throw 404 error
     tag = get_object_or_404(Tag, slug=slug)
+    # Filtering the posts according to the post tags and ordering them based on there creation date.
     posts = Post.objects.filter(post_tags=tag).order_by("-post_created_at")
     context = {
         'posts': posts,
@@ -60,4 +62,5 @@ def tagged(request, slug):
         'colors': ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
 
     }
+    # Rendering tagged page
     return render(request, 'tagged.html', context)
